@@ -13,14 +13,28 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
 	private String name;
 	private String lastname;
 	private String email;
 	private String password;
-	private int phone;
+	private long phone;
 	private String province;
 	private int age;
+	private String fiscalcode;
+	
+	public User(int id, String name, String lastname, String email, String password, long phone, String province,
+			int age, String fiscalcode) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.lastname = lastname;
+		this.email = email;
+		this.password = password;
+		this.phone = phone;
+		this.province = province;
+		this.age = age;
+		this.fiscalcode = fiscalcode;
+	}
 	
 	public User() {
 		// TODO Auto-generated constructor stub
@@ -66,11 +80,11 @@ public class User {
 		this.password = password;
 	}
 
-	public int getPhone() {
+	public long getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(long phone) {
 		this.phone = phone;
 	}
 
@@ -90,10 +104,19 @@ public class User {
 		this.age = age;
 	}
 
+	public String getFiscalcode() {
+		return fiscalcode;
+	}
+
+	public void setFiscalcode(String fiscalcode) {
+		this.fiscalcode = fiscalcode;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", lastname=" + lastname + ", email=" + email + ", password="
-				+ password + ", phone=" + phone + ", province=" + province + ", age=" + age + "]";
+				+ password + ", phone=" + phone + ", province=" + province + ", age=" + age + ", fiscalcode="
+				+ fiscalcode + "]";
 	}
 	
 	
