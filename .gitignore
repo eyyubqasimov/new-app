@@ -3,3 +3,4 @@
 .classes
 *.class
 **/classes/**
+**/target/**
