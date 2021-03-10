@@ -1,25 +1,7 @@
 package umb.carp.user;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "user")
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	@Column
+public class UserDTO {
 	private String username;
-	@Column
-	@JsonIgnore
 	private String password;
 	private String name;
 	private String lastname;
@@ -29,31 +11,6 @@ public class User {
 	private int age;
 	private String fiscalcode;
 	
-	
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public User(long id, String username, String password, String name, String lastname, String email, int phone,
-			String province, int age, String fiscalcode) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.lastname = lastname;
-		this.email = email;
-		this.phone = phone;
-		this.province = province;
-		this.age = age;
-		this.fiscalcode = fiscalcode;
-	}
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getUsername() {
 		return username;
 	}
@@ -108,11 +65,6 @@ public class User {
 	public void setFiscalcode(String fiscalcode) {
 		this.fiscalcode = fiscalcode;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", lastname="
-				+ lastname + ", email=" + email + ", phone=" + phone + ", province=" + province + ", age=" + age
-				+ ", fiscalcode=" + fiscalcode + "]";
-	}
 	
+
 }
