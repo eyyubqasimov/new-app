@@ -24,12 +24,12 @@ public class JwtTokenUtil implements Serializable {
 	@Value("${jwt.secret}")
 	private String secret;
 
-	//recuperare l'email dal token jwt
-	public String getEmailFromToken(String token) {
+	//retrieve username from jwt token
+	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
 
-	//recuperare la data di scadenza dal token jwt
+	//retrieve expiration date from jwt token
 	public Date getExpirationDateFromToken(String token) {
 		return getClaimFromToken(token, Claims::getExpiration);
 	}
@@ -69,7 +69,7 @@ public class JwtTokenUtil implements Serializable {
 
 	//validate token
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		final String email = getEmailFromToken(token);
-		return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		final String username = getUsernameFromToken(token);
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import umb.carp.dao.UserRepository;
+import umb.carp.exception.UserNotFoundException;
 import umb.carp.exception.UsernameAlreadyPresentException;
 import umb.carp.user.User;
 import umb.carp.user.UserDTO;
@@ -32,10 +33,28 @@ public class JwtUserDetailsService implements UserDetailsService {
 				new ArrayList<>());
 	}
 	
+	public UserDetails loadUserByEmail(String email) {
+		User user = userRepository.findByEmail(email);
+		if (user == null) {
+			throw new UserNotFoundException("User not found with email: " + email);
+		}
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+				new ArrayList<>());
+	}
+	
+	//load username from email
+	public String loadUsernameByEmail(String email) {
+		User user = userRepository.findByEmail(email);
+		if (user == null) {
+			throw new UserNotFoundException("User not found with email: " + email);
+		}
+		return user.getUsername();
+	}
+	
 	public User save(UserDTO user) {
-		User newUser = userRepository.findByUsername(user.getUsername());
+		User newUser = userRepository.findByEmail(user.getEmail());
 		if (newUser != null) {
-			throw new UsernameAlreadyPresentException("User already found with username: " + user.getUsername());
+			throw new UsernameAlreadyPresentException("User already found with email: " + user.getEmail());
 		}
 		
 		newUser = new User();

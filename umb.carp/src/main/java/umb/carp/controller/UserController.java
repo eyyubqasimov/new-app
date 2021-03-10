@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import umb.carp.dao.UserDao;
+import umb.carp.dao.UserRepository;
 import umb.carp.exception.UserNotFoundException;
 import umb.carp.user.User;
 
@@ -24,11 +24,11 @@ import umb.carp.user.User;
 public class UserController {
 
 	@Autowired
-	private UserDao service;
+	private UserRepository userRepository;
 	
 	@GetMapping(value = {"/users/list", "/users/"}, produces = "application/json")
 	public List<User> getUsers(){
-		return (List<User>) service.findAll();
+		return (List<User>) userRepository.findAll();
 	}
 	
 	@GetMapping(value = "/users/{id}", produces = "application/json")
@@ -36,7 +36,7 @@ public class UserController {
 //		Optional<User> user = this.service.findById(id);
 //		if(!user.isPresent()) throw new UserNotFoundException("id: "+id);
 		
-		User user = this.service.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: " + id));
+		User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: " + id));
 
 		return ResponseEntity.ok().body(user);
 	}
@@ -44,14 +44,14 @@ public class UserController {
 	@PostMapping("/users/")
 	public User createUser(@RequestBody User user) {
 		user.setPassword(""+Math.random());
-		return this.service.save(user);
+		return this.userRepository.save(user);
 	}
 	
 	@DeleteMapping("/users/{id}")
 	public Map<String, Boolean> deleteUser(@PathVariable int id) {
 //		Optional<User> user = this.service.findById(id);
-		User user = this.service.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: " + id));
-		this.service.delete(user);
+		User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: " + id));
+		this.userRepository.delete(user);
 		Map<String, Boolean> response = new HashMap<>();
         response.put("success", Boolean.TRUE);
         return response;
@@ -59,7 +59,7 @@ public class UserController {
 	
 	@PutMapping("/users/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User userInput) {
-		User user = this.service.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: "+ id));
+		User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: "+ id));
 //		user.get().setName(userInput.getName());
 //		user.get().setLastname(userInput.getLastname());
 //		user.get().setEmail(userInput.getEmail());
@@ -68,7 +68,7 @@ public class UserController {
 //		user.get().setProvince(userInput.getProvince());
 //		user.get().setAge(userInput.getAge());
 //		user.get().setFiscalcode(userInput.getFiscalcode());
-		final User updatedUser = this.service.save(userInput);
+		final User updatedUser = this.userRepository.save(userInput);
 		return ResponseEntity.ok(updatedUser);
 	}
 	
