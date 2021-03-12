@@ -7,7 +7,7 @@ public class UserDTO {
 	private String name;
 	private String lastname;
 	private String email;
-	private int phone;
+	private String phone;
 	private String province;
 	private int age;
 	private String fiscalcode;
@@ -52,11 +52,11 @@ public class UserDTO {
 		this.email = email;
 	}
 	
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 	
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	

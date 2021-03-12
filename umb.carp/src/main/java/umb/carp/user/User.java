@@ -14,24 +14,23 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private int id;
 	private String username;
 	@JsonIgnore
 	private String password;
 	private String name;
 	private String lastname;
 	private String email;
-	private int phone;
+	private String phone;
 	private String province;
 	private int age;
 	private String fiscalcode;
-	
 	
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(long id, String username, String password, String name, String lastname, String email, int phone,
+	public User(int id, String username, String password, String name, String lastname, String email, String phone,
 			String province, int age, String fiscalcode) {
 		super();
 		this.id = id;
@@ -45,10 +44,10 @@ public class User {
 		this.age = age;
 		this.fiscalcode = fiscalcode;
 	}
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getUsername() {
@@ -81,10 +80,10 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 	public String getProvince() {

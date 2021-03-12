@@ -17,18 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import umb.carp.dao.UserRepository;
 import umb.carp.exception.UserNotFoundException;
+import umb.carp.service.UserService;
 import umb.carp.user.User;
+import umb.carp.user.UserDTO;
 
 //@RequestMapping("/users")
 @RestController @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
+	//private UserRepository userRepository;
+	
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@GetMapping(value = {"/users/list", "/users/"}, produces = "application/json")
 	public List<User> getUsers(){
-		return (List<User>) userRepository.findAll();
+		return this.userService.getUsers();
 	}
 	
 	@GetMapping(value = "/users/{id}", produces = "application/json")
@@ -36,40 +40,25 @@ public class UserController {
 //		Optional<User> user = this.service.findById(id);
 //		if(!user.isPresent()) throw new UserNotFoundException("id: "+id);
 		
-		User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: " + id));
-
+		User user = this.userService.getUser(id);
 		return ResponseEntity.ok().body(user);
 	}
 	
 	@PostMapping("/users/")
-	public User createUser(@RequestBody User user) {
-		user.setPassword(""+Math.random());
-		return this.userRepository.save(user);
+	public User createUser(@RequestBody UserDTO user) {
+		return this.userService.save(user);//VERIFICARE SE L'UTENTE è GIA PRESENTE!!!
 	}
 	
 	@DeleteMapping("/users/{id}")
 	public Map<String, Boolean> deleteUser(@PathVariable int id) {
-//		Optional<User> user = this.service.findById(id);
-		User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: " + id));
-		this.userRepository.delete(user);
-		Map<String, Boolean> response = new HashMap<>();
-        response.put("success", Boolean.TRUE);
+		Map<String, Boolean> response = this.userService.deleteUser(id);
         return response;
 	}
 	
 	@PutMapping("/users/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User userInput) {
-		User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: "+ id));
-//		user.get().setName(userInput.getName());
-//		user.get().setLastname(userInput.getLastname());
-//		user.get().setEmail(userInput.getEmail());
-//		user.get().setPassword(userInput.getPassword());
-//		user.get().setPhone(userInput.getPhone());
-//		user.get().setProvince(userInput.getProvince());
-//		user.get().setAge(userInput.getAge());
-//		user.get().setFiscalcode(userInput.getFiscalcode());
-		final User updatedUser = this.userRepository.save(userInput);
-		return ResponseEntity.ok(updatedUser);
+	public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UserDTO userInput) {
+		User user = userService.updateUser(id, userInput);
+		return ResponseEntity.ok(user);
 	}
 	
 	
