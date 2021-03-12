@@ -1,6 +1,5 @@
 package umb.carp.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,11 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import umb.carp.dao.UserRepository;
-import umb.carp.exception.UserNotFoundException;
+import umb.carp.dto.ItemDTO;
+import umb.carp.model.Item;
 import umb.carp.service.UserService;
-import umb.carp.user.User;
-import umb.carp.user.UserDTO;
 
 //@RequestMapping("/users")
 @RestController @CrossOrigin(origins = "http://localhost:4200")
@@ -31,34 +28,33 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping(value = {"/users/list", "/users/"}, produces = "application/json")
-	public List<User> getUsers(){
-		return this.userService.getUsers();
+	public List<Item> getItems(){
+		return this.userService.getItems();
 	}
 	
 	@GetMapping(value = "/users/{id}", produces = "application/json")
-	public ResponseEntity<User> getUser(@PathVariable int id) {
+	public ResponseEntity<Item> getUser(@PathVariable int id) {
 //		Optional<User> user = this.service.findById(id);
 //		if(!user.isPresent()) throw new UserNotFoundException("id: "+id);
-		
-		User user = this.userService.getUser(id);
-		return ResponseEntity.ok().body(user);
+		Item item = this.userService.getItem(id);
+		return ResponseEntity.ok().body(item);
 	}
 	
 	@PostMapping("/users/")
-	public User createUser(@RequestBody UserDTO user) {
-		return this.userService.save(user);//VERIFICARE SE L'UTENTE è GIA PRESENTE!!!
+	public Item createItem(@RequestBody ItemDTO item) {
+		return this.userService.save(item);//VERIFICARE SE L'UTENTE è GIA PRESENTE!!!
 	}
 	
 	@DeleteMapping("/users/{id}")
 	public Map<String, Boolean> deleteUser(@PathVariable int id) {
-		Map<String, Boolean> response = this.userService.deleteUser(id);
+		Map<String, Boolean> response = this.userService.deleteItem(id);
         return response;
 	}
 	
 	@PutMapping("/users/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody UserDTO userInput) {
-		User user = userService.updateUser(id, userInput);
-		return ResponseEntity.ok(user);
+	public ResponseEntity<Item> updateItem(@PathVariable int id, @RequestBody ItemDTO itemInput) {
+		Item item = userService.updateItem(id, itemInput);
+		return ResponseEntity.ok(item);
 	}
 	
 	

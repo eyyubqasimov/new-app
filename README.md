@@ -30,3 +30,11 @@ Per creare un utente digitare, creare una chiamata POST: http://localhost:8080/r
     "password": "prova_12"
     }
 
+---------------
+
+http://localhost:8080/register
+{
+        "username": "ProvaUmb",
+        "email": "umb@gmail.com",
+        "password": "prova12"
+}

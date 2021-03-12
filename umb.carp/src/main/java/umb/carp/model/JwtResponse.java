@@ -1,4 +1,4 @@
-package umb.carp.user;
+package umb.carp.model;
 
 import java.io.Serializable;
 

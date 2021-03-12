@@ -8,18 +8,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import umb.carp.dao.UserRepository;
+import umb.carp.dto.UserDTO;
 import umb.carp.exception.UserNotFoundException;
 import umb.carp.exception.UsernameAlreadyPresentException;
-import umb.carp.user.User;
-import umb.carp.user.UserDTO;
+import umb.carp.model.User;
+import umb.carp.repository.UserRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-
+	
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
@@ -43,30 +43,24 @@ public class JwtUserDetailsService implements UserDetailsService {
 	}
 	
 	//load username from email
-	public String loadUsernameByEmail(String email) {
-		User user = userRepository.findByEmail(email);
+	public User loadUsernByEmail(String email) {
+		User user = this.userRepository.findByEmail(email);
 		if (user == null) {
 			throw new UserNotFoundException("User not found with email: " + email);
 		}
-		return user.getUsername();
+		return user;
 	}
 	
+	//ok
 	public User save(UserDTO user) {
 		User newUser = userRepository.findByEmail(user.getEmail());
 		if (newUser != null) {
 			throw new UsernameAlreadyPresentException("User already found with email: " + user.getEmail());
 		}
-		
 		newUser = new User();
+		newUser.setEmail(user.getEmail());
 		newUser.setUsername(user.getUsername());
 		newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-		newUser.setName(user.getName());
-		newUser.setLastname(user.getLastname());
-		newUser.setEmail(user.getEmail());
-		newUser.setPhone(user.getPhone());
-		newUser.setProvince(user.getProvince());
-		newUser.setAge(user.getAge());
-		newUser.setFiscalcode(user.getFiscalcode());
 		return userRepository.save(newUser);
 	}
 }

@@ -6,65 +6,65 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import umb.carp.dao.UserRepository;
+import umb.carp.dto.ItemDTO;
 import umb.carp.exception.UserNotFoundException;
-import umb.carp.user.User;
-import umb.carp.user.UserDTO;
+import umb.carp.model.Item;
+import umb.carp.repository.ItemRepository;
 
 @Service
 public class UserService {
 	
 	@Autowired
-	private UserRepository userRepository;
+	private ItemRepository itemRepository;
+	
 	
 	//return all users
-	public List<User> getUsers(){
-		return userRepository.findAll();
+	public List<Item> getItems(){
+		return itemRepository.findAll();
 	}
 	
-	private User findById(int id) {
-		User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Utente non presente per id: " + id));
-		return user;
+	private Item findById(int id) {
+		Item item = this.itemRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Item non presente per id: " + id));
+		return item;
 	}
 	
-	//return a user
-	public User getUser(int id) {
-		User user = findById(id);
-		return user;
+	//return a item of the list
+	public Item getItem(int id) {
+		Item item = findById(id);
+		return item;
 	}
 	
-	public User save(UserDTO userDTO) {//attenzione manca la password
-		User user = new User();
-		user = setUser(user, userDTO);
-		return this.userRepository.save(user);
+	public Item save(ItemDTO itemDTO) {
+		Item item = new Item();
+		item = setItem(item, itemDTO);
+		return this.itemRepository.save(item);
 	}
 	
-	//delete a user
-	public Map<String, Boolean> deleteUser(int id) {
-		User user = findById(id);
-		this.userRepository.delete(user);
+	//delete a item
+	public Map<String, Boolean> deleteItem(int id) {
+		Item item = findById(id);
+		this.itemRepository.delete(item);
 		Map<String, Boolean> response = new HashMap<>();
         response.put("success", Boolean.TRUE);
         return response;
 	}
 	
-	public User updateUser(int id, UserDTO userDTO) {
-		User user = findById(id);
-		user = setUser(user, userDTO);
-		return this.userRepository.save(user);
+	public Item updateItem(int id, ItemDTO itemDTO) {
+		Item item = findById(id);
+		item = setItem(item, itemDTO);
+		return this.itemRepository.save(item);
 	}
 	
-	public User setUser(User user, UserDTO userDTO) {
-		user.setName(userDTO.getName());
-		user.setLastname(userDTO.getLastname());
-		user.setEmail(userDTO.getEmail());
-		user.setPhone(userDTO.getPhone());
-		user.setProvince(userDTO.getProvince());
-		user.setAge(userDTO.getAge());
-		user.setFiscalcode(userDTO.getFiscalcode());
-		return user;
+	public Item setItem(Item item, ItemDTO itemDTO) {
+		item.setName(itemDTO.getName());
+		item.setLastname(itemDTO.getLastname());
+		item.setEmail(itemDTO.getEmail());
+		item.setPhone(itemDTO.getPhone());
+		item.setProvince(itemDTO.getProvince());
+		item.setAge(itemDTO.getAge());
+		item.setFiscalcode(itemDTO.getFiscalcode());
+		return item;
 	}
 	
 }
